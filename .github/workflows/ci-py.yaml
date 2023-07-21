@@ -5,6 +5,8 @@ on:
       - '*'
 #     paths:
 #       - './src/python/**'
+  release:
+    types: [published]  
 
 jobs:
   test:
@@ -33,6 +35,8 @@ jobs:
       - name: Build & Upload Artifact
         run: | 
           echo "Build & Upload artifact"
+          echo "event name is:" ${{ github.event_name }} 
+          echo "event type is:" ${{ github.event.action }} 
 
   deploy-staging:
     name: "Deploy | Staging"
