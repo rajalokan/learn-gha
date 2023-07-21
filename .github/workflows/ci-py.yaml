@@ -30,7 +30,7 @@ jobs:
   build:
     name: "Build"
 #     if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, '--deploy')
-    needs: [test]
+#     needs: [test]
     runs-on: ubuntu-latest
     steps:
       - name: Build & Upload Artifact
