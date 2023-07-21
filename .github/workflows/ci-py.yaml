@@ -43,4 +43,7 @@ jobs:
     steps:
       - name: Deploy To Staging
         run: | 
-          echo "Deploy To Staging"
+          echo "Deploy To Staging using $AWS_AK and $AWS_SK"
+        env:
+          AWS_AK: ${{ secrets.AWS_AK }}
+          AWS_SK: ${{ secrets.AWS_SK }}
