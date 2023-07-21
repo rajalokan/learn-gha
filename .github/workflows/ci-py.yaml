@@ -65,3 +65,17 @@ jobs:
         env:
           AWS_AK: ${{ vars.AWS_AK }}
           AWS_SK: ${{ vars.AWS_SK }}
+
+  deploy-prod:
+    name: "Deploy (Production)"
+    environment: Production
+    needs: [deploy-qa]
+    if: github.event_name == 'release' && github.event.action == 'published'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy To Production
+        run: | 
+          echo "Deploy To Production using $AWS_AK and $AWS_SK"
+        env:
+          AWS_AK: ${{ vars.AWS_AK }}
+          AWS_SK: ${{ vars.AWS_SK }}
