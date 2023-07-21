@@ -4,7 +4,7 @@ on:
     branches:
       - '*'
     paths:
-      - '.src/python/**'
+      - './src/python/**'
 
 jobs:
   test:
