@@ -1,0 +1,19 @@
+name: Reusable workflow example
+
+on:
+  workflow_call:
+    inputs:
+      app-env:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:  
+        - name: Deploy To Staging
+          run: | 
+            echo "Deploy to $inputs.app-env using $AWS_AK and $AWS_SK"
+          env:
+            AWS_AK: ${{ vars.AWS_AK }}
+            AWS_SK: ${{ vars.AWS_SK }}
