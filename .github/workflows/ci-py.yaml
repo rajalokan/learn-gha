@@ -24,12 +24,22 @@ jobs:
       - name: Test
         run: echo "make test"
 
-  deploy:
-    name: "Deploy"
+  build:
+    name: "Build"
     if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, '--deploy')
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy
+      - name: Build & Upload Artifact
         run: | 
-          echo "Deploy"
+          echo "Build & Upload artifact"
+
+  deploy:
+    name: "Deploy | Staging"
+    if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, '--deploy')
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy To Staging
+        run: | 
+          echo "Deploy To Staging"
