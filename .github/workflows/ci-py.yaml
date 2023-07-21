@@ -52,3 +52,16 @@ jobs:
         env:
           AWS_AK: ${{ vars.AWS_AK }}
           AWS_SK: ${{ vars.AWS_SK }}
+
+  deploy-qa:
+    name: "Deploy (QA)"
+    environment: QA
+    if: github.event_name == 'published'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy To QA
+        run: | 
+          echo "Deploy To QA using $AWS_AK and $AWS_SK"
+        env:
+          AWS_AK: ${{ vars.AWS_AK }}
+          AWS_SK: ${{ vars.AWS_SK }}
