@@ -1,0 +1,62 @@
+name: CD | Python
+on:
+  push:
+    branches:
+      - 'main'
+#     paths:
+#       - './src/python/**'
+  release:
+    types: [published]  
+
+jobs:
+  build:
+    name: "Build"
+    if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, '--deploy')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build & Upload Artifact
+        run: | 
+          echo "Build & Upload artifact"
+          echo "event name is:" ${{ github.event_name }} 
+          echo "event type is:" ${{ github.event.action }} 
+
+  deploy-staging:
+    name: "Deploy (Staging)"
+    environment: Staging
+    if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, '--deploy')
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy To Staging
+        run: | 
+          echo "Deploy To Staging using $AWS_AK and $AWS_SK"
+        env:
+          AWS_AK: ${{ vars.AWS_AK }}
+          AWS_SK: ${{ vars.AWS_SK }}
+
+  deploy-qa:
+    name: "Deploy (QA)"
+    environment: QA
+    if: github.event_name == 'release' && github.event.action == 'published'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy To QA
+        run: | 
+          echo "Deploy To QA using $AWS_AK and $AWS_SK"
+        env:
+          AWS_AK: ${{ vars.AWS_AK }}
+          AWS_SK: ${{ vars.AWS_SK }}
+
+  deploy-prod:
+    name: "Deploy (Production)"
+    environment: Production
+    needs: [deploy-qa]
+    if: github.event_name == 'release' && github.event.action == 'published'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy To Production
+        run: | 
+          echo "Deploy To Production using $AWS_AK and $AWS_SK"
+        env:
+          AWS_AK: ${{ vars.AWS_AK }}
+          AWS_SK: ${{ vars.AWS_SK }}
