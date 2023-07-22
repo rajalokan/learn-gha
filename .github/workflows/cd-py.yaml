@@ -37,7 +37,7 @@ jobs:
   deploy-qa:
     name: "Deploy (QA)"
     environment: QA
-    if: github.event_name == 'release' && github.event.action == 'published'
+    if: always() && github.event_name == 'release' && github.event.action == 'published'
     needs: [deploy-staging]
     runs-on: ubuntu-latest
     steps:
