@@ -1,4 +1,4 @@
-name: CD | Python
+name: Python | CD
 on:
   push:
     branches:
