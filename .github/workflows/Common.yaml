@@ -5,6 +5,6 @@ on:
 
 jobs:
   infra:
-    uses: rajalokan/learn-gh-actions/blob/main/.github/workflows/common.yaml@main
+    uses: rajalokan/learn-gh-actions/.github/workflows/common.yaml@main
     secrets:
       password: rajalokan
