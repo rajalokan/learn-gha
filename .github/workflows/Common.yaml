@@ -1,4 +1,4 @@
-name: TI - Ansible Mongodb Replicaset
+name: Common
 
 on:
   workflow_dispatch:
