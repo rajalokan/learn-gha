@@ -1,0 +1,24 @@
+name: TI - Ansible Mongodb Replicaset
+
+on:
+  workflow_dispatch:
+    inputs:
+      ansible_inventory_filename:
+        description: "Ansible inventory filename. Eg (hosts_<stack_id>.yml). Filename is relative to inventory folder"
+        required: true
+      ansible_tags:
+        description: "Ansible tag names. Eg (mongodb_install,mongodb_configure). Tagname relative to playbook"
+        required: false
+
+jobs:
+  infra:
+    uses: private-circle/infra-workflows/.github/workflows/run_ansible.yml@stable
+    with:
+      ansible_inventory_filename: ${{ github.event.inputs.ansible_inventory_filename }}
+      ansible_playbook: setup_mongodb/setup_mongodb_replicaset.yml
+      ansible_tags: ${{ github.event.inputs.ansible_tags }}
+    secrets:
+      PRIVATECIRCLE_CI_GITHUB_USER_PAT: ${{ secrets.PRIVATECIRCLE_CI_GITHUB_USER_PAT }}
+      ANSIBLE_SSH_PRIVATE_KEY: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
+      INFRA_ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+      USER_ANSIBLE_VAULT_PASSWORD: ${{ secrets.USER_ANSIBLE_VAULT_PASSWORD}}
