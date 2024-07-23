@@ -24,5 +24,7 @@ jobs:
           with:
               ref: ${{ inputs.commit }}
 
-        - name: List
-          run: ls -al
+        - name: Debug
+          run: |
+            echo "${{ inputs.commit }}"
+            ls -al
