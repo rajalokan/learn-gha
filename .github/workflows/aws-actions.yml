@@ -26,5 +26,5 @@ jobs:
 
         - name: Debug
           run: |
-            echo "Deploying ${{ github.event.inputs.environment }} with commit hash : ${{ github.event.inputs.commit }}"            
+            echo "Deploying ${{ github.event.inputs.environment }} with commit hash : ${{ github.event.inputs.commitHash }}"            
             ls -al
