@@ -1,5 +1,15 @@
 name: Interact with AWS
 on:
+  workflow_call:
+    inputs:
+      environment:        
+        description: 'Environment (dev, staging, production)'
+        required: true
+        type: string
+      commitHash:
+        description: 'Commit hash to checkout'
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       environment:
