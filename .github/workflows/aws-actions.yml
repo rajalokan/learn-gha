@@ -20,9 +20,9 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Checkout repository
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
           with:
-              ref: ${{ github.event.inputs.commit }}
+              ref: ${{ github.event.inputs.commitHash }}
 
         - name: Debug
           run: |
