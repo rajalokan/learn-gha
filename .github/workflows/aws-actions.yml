@@ -22,7 +22,7 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v4
           with:
-              ref: ${{ github.event.inputs.commitHash }}
+            ref: ${{ github.event.inputs.commitHash }}
 
         - name: Debug
           run: |
