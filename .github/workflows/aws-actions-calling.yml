@@ -1,0 +1,22 @@
+name: Interact with AWS (Calling)
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: 'Environment (dev, staging, production)'
+        options:
+          - dev
+          - staging
+          - production
+        default: "dev"
+        required: true
+      commitHash:
+        description: 'Commit hash to checkout'
+        required: true
+
+jobs:
+  test:
+    uses: rajalokan/learn-gha/.github/workflows/aws-actions.yml@main
+    with:
+      environment: ${{ github.events.inputs.environment }}
