@@ -26,5 +26,5 @@ jobs:
 
         - name: Debug
           run: |
-            echo "${{ inputs.commit }}"
+            echo "Deploying ${{ inputs.environment }} with commit hash : ${{ inputs.commit }}"            
             ls -al
