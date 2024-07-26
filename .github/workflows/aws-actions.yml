@@ -32,9 +32,9 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v4
           with:
-            ref: ${{ github.event.inputs.commitHash }}
+            ref: ${{ inputs.commitHash }}
 
         - name: Debug
           run: |
-            echo "Deploying ${{ github.event.inputs.environment }} with commit hash : ${{ github.event.inputs.commitHash }}"            
+            echo "Deploying ${{ inputs.environment }} with commit hash : ${{ inputs.commitHash }}"            
             ls -al
