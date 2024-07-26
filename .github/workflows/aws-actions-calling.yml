@@ -19,5 +19,5 @@ jobs:
   test:
     uses: rajalokan/learn-gha/.github/workflows/aws-actions.yml@main
     with:
-      environment: ${{ github.events.inputs.environment }}
-      commitHash: ${{ github.events.inputs.commitHash }}
+      environment: ${{ inputs.environment }}
+      commitHash: ${{ inputs.commitHash }}
