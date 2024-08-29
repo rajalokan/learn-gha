@@ -1,0 +1,39 @@
+name: Deploy Services
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: 'Environment (dev, staging, production)'
+        options:
+          - dev
+          - staging
+          - production
+        default: "dev"
+        required: true
+      serviceName:
+        type: choice
+        description: 'Deploy selected service'
+        options:
+          - foo
+          - bar
+        default: foo
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up common environment variables
+        uses: ./.github/actions/setup-env
+      
+      - name: Debug
+        run: |
+          echo "Deploying application ${{ APP_NAME }} / ${{ inputs.environment }} with database ${{ DB_NAME }}"
+  
+      
