@@ -1,0 +1,8 @@
+name: 'Set Up Common Environment Variables'
+description: 'Sets up common environment variables for all jobs'
+runs:
+  using: 'composite'
+  steps:
+    - run: |
+        echo "APP_NAME=exampleAPP" >> $GITHUB_ENV
+        echo "API_TIMEOUT=30" >> $GITHUB_ENV
