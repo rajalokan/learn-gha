@@ -6,3 +6,5 @@ runs:
     - run: |
         echo "APP_NAME=exampleAPP" >> $GITHUB_ENV
         echo "API_TIMEOUT=30" >> $GITHUB_ENV
+      shell: bash
+
