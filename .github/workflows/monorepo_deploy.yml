@@ -34,6 +34,6 @@ jobs:
       
       - name: Debug
         run: |
-          echo "Deploying application ${{ APP_NAME }} / ${{ inputs.environment }} with database ${{ DB_NAME }}"
+          echo "Deploying application ${{ vars.APP_NAME }} / ${{ inputs.environment }} with database ${{ vars.DB_NAME }}"
   
       
