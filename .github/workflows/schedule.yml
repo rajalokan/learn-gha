@@ -12,5 +12,3 @@ jobs:
     with:
       environment: dev
       tag_name: 123456
-      foo: FOO
-      bar: BAAR
