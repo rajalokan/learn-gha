@@ -7,8 +7,7 @@ on:
     - cron: '*/6 * * * *'
 
 jobs:
-  run-scheduled-task:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run a sample script
-        run: echo "This workflow runs every hour"
+  deploy:
+    uses: ./.github/workflows/example-deploy.yml
+    with:
+      environment: dev
