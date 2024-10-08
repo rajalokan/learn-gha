@@ -8,7 +8,16 @@ on:
 
 jobs:
   deploy:
-    uses: ./.github/workflows/example-deploy.yml
-    with:
-      environment: dev
-      tag_name: 123456
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: unstable
+
+      - name: Deploy
+        uses: ./.github/workflows/example-deploy.yml@example
+        with:
+          environment: dev
+          tag_name: 123456
