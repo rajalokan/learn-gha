@@ -10,6 +10,22 @@ on:
       tag_name:
         required: false
         type: string
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        type: choice
+        description: "The target environment for deployment"
+        options:
+          - dev
+          - staging
+          - test
+          # - production
+        default: "dev"
+      tag_name:
+        required: true
+        type: string      
+        default: "1234"
 
 jobs:
   deploy:
