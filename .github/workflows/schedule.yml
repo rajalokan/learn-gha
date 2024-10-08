@@ -1,0 +1,13 @@
+name: Run Every Hour
+
+on:
+  schedule:
+    # This cron expression runs the workflow every hour
+    - cron: '*/5 * * * *'
+
+jobs:
+  run-scheduled-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a sample script
+        run: echo "This workflow runs every hour"
