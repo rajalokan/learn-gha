@@ -11,25 +11,11 @@ on:
         required: false
         type: string
 
-  workflow_dispatch:
-    inputs:
-      environment:
-        required: true
-        # note: choice is used here to prevent selection of legacy environments
-        type: choice
-        description: "The target environment for deployment"
-        options:
-          - dev
-          - staging
-          - test
-          # - production
-        default: "dev"
-
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-20.04
     steps:
-      - name: Deploy
+      - name: Deploy New
         run: |
           echo "Deploying ${{ inputs.tag_name }} to ${{ inputs.environment }}"
