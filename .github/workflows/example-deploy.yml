@@ -16,6 +16,6 @@ jobs:
     name: Deploy
     runs-on: ubuntu-20.04
     steps:
-      - name: Deploy New
+      - name: Deploy unstable
         run: |
-          echo "Deploying ${{ inputs.tag_name }} to ${{ inputs.environment }}"
+          echo "Deploying ${{ inputs.tag_name }} to ${{ inputs.environment }} in unstable workflow"
