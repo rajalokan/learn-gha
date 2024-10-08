@@ -11,3 +11,4 @@ jobs:
     uses: ./.github/workflows/example-deploy.yml
     with:
       environment: dev
+      tag_name: 123456
