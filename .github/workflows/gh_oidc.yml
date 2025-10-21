@@ -2,12 +2,23 @@ name: Run Migration Analyzer
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - gh_oidc
 
 jobs:
   analyze:
+    name: Analyze
     runs-on: ubuntu-latest
     # env:
     #   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      
+      - name: Run Migration Analyzer
+        run: |
+          gh pr status
+          gh migration-analyzer run --repo your-org/your-repo
+
