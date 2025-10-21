@@ -20,5 +20,7 @@ jobs:
       - name: Run Migration Analyzer
         run: |
           gh pr status
-          gh migration-analyzer run --repo your-org/your-repo
+          echo ${GH_TOKEN:0:10}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
