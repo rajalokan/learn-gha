@@ -19,8 +19,8 @@ jobs:
       
       - name: Run Migration Analyzer
         run: |
-          gh pr status
-          echo ${GH_TOKEN:0:10}"
+          gh org list
+          echo ${GH_TOKEN:0:10}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
