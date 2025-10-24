@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        org: ${{ fromJson(needs.prepare.outputs.org-matrix) }}
+        org: [null]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
