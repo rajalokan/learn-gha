@@ -1,12 +1,16 @@
 name: Multiorg Script Runner
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       script-name:
         description: Script to execute from the scripts directory.
         required: true
         type: choice
+        default: list-repo.sh
         options:
           - list-repo.sh
       org-names:
@@ -69,4 +73,5 @@ jobs:
 
       - name: Run selected script
         run: |
-          bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
+          echo ${{ inputs['script-name'] }}
+          # bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
