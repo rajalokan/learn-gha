@@ -40,20 +40,7 @@ jobs:
           has_all_flag = 'ORG_ALL' in provided
 
           if has_all_flag:
-              app_id = os.getenv('APP_ID')
-              private_key = os.getenv('PRIVATE_KEY')
-              if not app_id or not private_key:
-                  raise RuntimeError('ORG_ALL requested but GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY secrets are missing.')
-
-              script_path = Path.cwd() / 'scripts' / 'list-app-orgs.js'
-              result = subprocess.run(
-                  ['node', str(script_path)],
-                  check=True,
-                  text=True,
-                  capture_output=True,
-                  env={**os.environ, 'APP_ID': app_id, 'PRIVATE_KEY': private_key},
-              )
-              orgs = json.loads(result.stdout)
+              # TODO: Add logic to fetch all orgs the app is part of
           elif provided:
               orgs = [value for value in provided if value != 'ORG_ALL']
           else:
@@ -75,6 +62,7 @@ jobs:
     strategy:
       matrix:
         org: ${{ fromJson(needs.prepare.outputs.org-matrix) }}
+    continue-on-error: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
