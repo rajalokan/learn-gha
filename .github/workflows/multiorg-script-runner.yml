@@ -45,6 +45,7 @@ jobs:
 
           if has_all_flag:
               # TODO: Add logic to fetch all orgs the app is part of
+              orgs = None
           elif provided:
               orgs = [value for value in provided if value != 'ORG_ALL']
           else:
