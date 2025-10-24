@@ -82,4 +82,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run selected script
-        run: bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
+        run: |
+          ls
+          pwd
+          # bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
