@@ -65,7 +65,7 @@ jobs:
               raise RuntimeError('Organization list is empty.')
 
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as handle:
-              value = 'null' if orgs is None else json.dumps(orgs)
+              value = '[null]' if orgs is None else json.dumps(orgs)
               handle.write(f"org-matrix={value}\n")
           PYTHON
 
@@ -74,12 +74,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        org: [null]
+        org: ${{ fromJson(needs.prepare.outputs.org-matrix) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Run selected script
         run: |
-          echo ${{ matrix.org }}
-          # bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
+          bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
