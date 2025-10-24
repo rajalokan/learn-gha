@@ -72,8 +72,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run selected script
-        run: |
-          # bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
-          bash "./.github/scripts/${{ env.default-script-name }}" "${{ matrix.org }}"
         env:
-          default-script-name: list-repo.sh
+          DEFAULT_SCRIPT_NAME: list-repo.sh
+        run: |
+          bash "./.github/scripts/${{ env.DEFAULT_SCRIPT_NAME }}" "${{ matrix.org }}"
