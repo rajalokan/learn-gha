@@ -81,6 +81,5 @@ jobs:
 
       - name: Run selected script
         run: |
-          ls
-          pwd
+          echo ${{ matrix.org }}
           # bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
