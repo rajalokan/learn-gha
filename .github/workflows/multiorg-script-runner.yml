@@ -10,7 +10,6 @@ on:
         description: Script to execute from the scripts directory.
         required: true
         type: choice
-        default: list-repo.sh
         options:
           - list-repo.sh
       org-names:
@@ -74,5 +73,7 @@ jobs:
 
       - name: Run selected script
         run: |
-          echo ${{ inputs['script-name'] }}
           # bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
+          bash "./.github/scripts/${{ env.default-script-name }}" "${{ matrix.org }}"
+        env:
+          default-script-name: list-repo.sh
