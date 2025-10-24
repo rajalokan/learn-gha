@@ -1,0 +1,86 @@
+name: Multiorg Script Runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      script-name:
+        description: Script to execute from the scripts directory.
+        required: true
+        type: choice
+        options:
+          - list-repo.sh
+      org-names:
+        description: Comma separated list of organization names.
+        required: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      org-matrix: ${{ steps.format.outputs.org-matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare organization matrix
+        id: format
+        env:
+          ORG_NAMES: ${{ inputs.org-names }}
+          APP_ID: ${{ secrets.GITHUB_APP_ID }}
+          PRIVATE_KEY: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
+        run: |
+          python <<'PYTHON'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          raw = os.getenv('ORG_NAMES') or ''
+          provided = [value.strip() for value in raw.split(',') if value.strip()]
+          has_all_flag = 'ORG_ALL' in provided
+
+          if has_all_flag:
+              app_id = os.getenv('APP_ID')
+              private_key = os.getenv('PRIVATE_KEY')
+              if not app_id or not private_key:
+                  raise RuntimeError('ORG_ALL requested but GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY secrets are missing.')
+
+              script_path = Path.cwd() / 'scripts' / 'list-app-orgs.js'
+              result = subprocess.run(
+                  ['node', str(script_path)],
+                  check=True,
+                  text=True,
+                  capture_output=True,
+                  env={**os.environ, 'APP_ID': app_id, 'PRIVATE_KEY': private_key},
+              )
+              orgs = json.loads(result.stdout)
+          elif provided:
+              orgs = [value for value in provided if value != 'ORG_ALL']
+          else:
+              orgs = None
+
+          if isinstance(orgs, list) and not orgs:
+              if has_all_flag:
+                  raise RuntimeError('Organization list is empty when fetching all organizations.')
+              raise RuntimeError('Organization list is empty.')
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as handle:
+              value = 'null' if orgs is None else json.dumps(orgs)
+              handle.write(f"org-matrix={value}\n")
+          PYTHON
+
+  run-script:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        org: ${{ fromJson(needs.prepare.outputs.org-matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run selected script
+        run: |
+          ls
+          pwd
+          # bash "./.github/scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
