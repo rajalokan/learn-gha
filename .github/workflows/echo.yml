@@ -1,0 +1,85 @@
+name: Multiorg Script Runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      script-name:
+        description: Script to execute from the scripts directory.
+        required: true
+        type: choice
+        options:
+          - list-repo.sh
+      org-names:
+        description: Comma separated list of organization names.
+        required: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      org-matrix: ${{ steps.format.outputs.org-matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare organization matrix
+        id: format
+        env:
+          ORG_NAMES: ${{ inputs.org-names }}
+          APP_ID: ${{ secrets.GITHUB_APP_ID }}
+          PRIVATE_KEY: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const { execFileSync } = require('child_process');
+
+          const raw = process.env.ORG_NAMES ?? '';
+          const provided = raw
+            .split(',')
+            .map((value) => value.trim())
+            .filter(Boolean);
+
+          let orgs = provided;
+
+          if (orgs.length === 0) {
+            const appId = process.env.APP_ID;
+            const privateKey = process.env.PRIVATE_KEY;
+            if (!appId || !privateKey) {
+              throw new Error('Either provide org-names input or configure GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY secrets.');
+            }
+
+            const output = execFileSync(
+              'node',
+              [path.join(process.cwd(), 'scripts', 'list-app-orgs.js')],
+              {
+                encoding: 'utf-8',
+                env: { ...process.env, APP_ID: appId, PRIVATE_KEY: privateKey },
+              },
+            );
+            orgs = JSON.parse(output);
+          }
+
+          if (orgs.length === 0) {
+            throw new Error('Organization list is empty.');
+          }
+
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `org-matrix=${JSON.stringify(orgs)}\n`,
+            { encoding: 'utf-8' },
+          );
+          NODE
+
+  run-script:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        org: ${{ fromJson(needs.prepare.outputs.org-matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run selected script
+        run: bash "./scripts/${{ inputs['script-name'] }}" "${{ matrix.org }}"
